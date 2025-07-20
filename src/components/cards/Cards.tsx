@@ -21,7 +21,7 @@ class Cards extends PureComponent<Props, object> {
             </li>
           ))
         ) : (
-          <h3>Noting here</h3>
+          <h3>Nothing here</h3>
         )}
       </ul>
     );

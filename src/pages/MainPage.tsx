@@ -43,7 +43,6 @@ class MainPage extends Component {
   };
   render(): ReactNode {
     const { cards, isLoading, error } = this.state;
-    console.log(this.state);
     return (
       <main
         className="gap-8 p-8"

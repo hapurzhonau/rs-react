@@ -21,6 +21,21 @@
 
 ---
 
+## 📊 Tests & Coverage
+
+- All logic is **100% covered** by unit tests
+- Tested with [`Vitest`](https://vitest.dev/)
+- Mocked API requests via [`MSW`](https://mswjs.io/)
+- Covered scenarios:
+  - API success & error
+  - Fallback message via `ErrorBoundary`
+  - Search logic + localStorage integration
+
+**✅ Coverage Report:**
+<img width="1111" height="385" alt="image" src="https://github.com/user-attachments/assets/ab453972-b32e-40d8-9a50-743904f6dba1" />
+
+---
+
 ## 🎯 Features
 
 - Class components only (no hooks used)
@@ -41,6 +56,7 @@
 - [Vite](https://vitejs.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - ESLint, Prettier, Husky
+- [Vitest](https://vitest.dev/) for testing
 
 ---
 
@@ -67,15 +83,7 @@ To test and verify the application locally, follow these steps:
 ### Clone the repository
 ```bash
 git clone https://github.com/hapurzhonau/rs-react.git
-cd rs-react 
-```
- or 
-```
-git clone https://github.com/hapurzhonau/rs-react.git my-project
-cd my-project
-```
- and
-```
+cd rs-react
 npm install
 npm run dev
 ```
@@ -89,6 +97,8 @@ npm run dev
 | `npm run lint`      | Run ESLint                      |
 | `npm run format:fix`| Run Prettier formatter          |
 | `npm run prepare`   | Prepares Husky hooks (only once after cloning) |
+| `npm run test`      | Run all tests using Vitest |
+| `npm run test:coverage` | Run tests with coverage report |
 ---
 
 ## ✅ Completed Requirements
@@ -100,11 +110,13 @@ npm run dev
 | Husky pre-commit with lint                            | ✅     |
 | Class components with Search + Results layout         | ✅     |
 | API fetch on mount                                    | ✅     |
-| Skeletons shown while fetching                           | ✅     |
+| Skeletons shown while fetching                        | ✅     |
 | Search triggers fetch + saves to `localStorage`       | ✅     |
 | `localStorage` used on initial load                   | ✅     |
 | `ErrorBoundary` catches render errors                 | ✅     |
 | Test button throws an error and shows fallback UI     | ✅     |
+| Unit tests for API, search, errors, and fallback      | ✅     |
+| 100% test coverage across components and logic        | ✅     |
 
 ---
 
