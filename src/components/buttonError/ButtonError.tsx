@@ -1,22 +1,18 @@
-import { Component, type ReactNode } from 'react';
+import { useState } from 'react';
 
-class ButtonError extends Component {
-  state = { isError: false };
-  handleError = () => {
-    this.setState({ isError: true });
+export const ButtonError = () => {
+  const [isError, setIsError] = useState(false);
+  if (isError) throw new Error('Error from ButtonError');
+  const handleError = () => {
+    setIsError((prev: boolean) => !prev);
   };
-  render(): ReactNode {
-    if (this.state.isError) {
-      throw new Error('Error from ButtonError');
-    }
-    return (
-      <button
-        onClick={this.handleError}
-        className="border-2 rounded-sm px-3 bg-gray-700 cursor-pointer max-w-fit"
-      >
-        Error
-      </button>
-    );
-  }
-}
-export default ButtonError;
+
+  return (
+    <button
+      onClick={handleError}
+      className="border-2 rounded-sm px-3 bg-gray-700 cursor-pointer max-w-fit"
+    >
+      Error
+    </button>
+  );
+};

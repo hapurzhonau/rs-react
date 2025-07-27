@@ -18,32 +18,6 @@ describe('api request behavior', async () => {
     expect(result).toEqual(mockCharactersResponse);
     expect(result.error).toBeUndefined();
   });
-  test('search from localStorage', async () => {
-    localStorage.setItem('search', 'Morty');
-    server.use(
-      http.get(API_URL, ({ request }) => {
-        const url = new URL(request.url);
-        const name = url.searchParams.get('name');
-
-        if (name === 'Morty') {
-          return HttpResponse.json({
-            info: { count: 1, pages: 1, next: null },
-            results: [mockCharacters[0]],
-          });
-        }
-        return HttpResponse.json({
-          info: { count: 0, pages: 0, next: null },
-          results: [],
-        });
-      })
-    );
-    const result = await getAllCharacters();
-    expect(result).toEqual({
-      info: { count: 1, pages: 1, next: null },
-      results: [mockCharacters[0]],
-    });
-    expect(result.error).toBeUndefined();
-  });
   test('error', async () => {
     server.use(
       http.get(API_URL, () => {

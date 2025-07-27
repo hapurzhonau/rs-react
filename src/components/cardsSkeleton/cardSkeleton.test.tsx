@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import CardsSkeleton from './CardsSkeleton';
+import { CardsSkeleton } from './CardsSkeleton';
 import { render, screen } from '@testing-library/react';
 
 describe('skeletons render', () => {

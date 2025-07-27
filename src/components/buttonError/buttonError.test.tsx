@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import ButtonError from './ButtonError';
+import { ButtonError } from './ButtonError';
 import { user } from '../../__test__/setupTests';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 

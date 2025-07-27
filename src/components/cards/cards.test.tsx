@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
-import Cards from './Cards';
+import { Cards } from './Cards';
 import type { Character } from '../../interfaces/apiInterface';
+import { MemoryRouter } from 'react-router-dom';
 
 const mockCharacters: Character[] = [
   {
@@ -23,11 +24,19 @@ const mockCharacters: Character[] = [
 
 describe('cards', () => {
   test('render multiple cards', () => {
-    render(<Cards cards={mockCharacters} />);
+    render(
+      <MemoryRouter>
+        <Cards cards={mockCharacters} />
+      </MemoryRouter>
+    );
     expect(screen.getAllByRole('listitem').length).toBe(3);
   });
   test('render title if list is empty', () => {
-    render(<Cards cards={[]} />);
+    render(
+      <MemoryRouter>
+        <Cards cards={[]} />
+      </MemoryRouter>
+    );
     expect(screen.getByText(/nothing/i)).toBeInTheDocument();
   });
 });
