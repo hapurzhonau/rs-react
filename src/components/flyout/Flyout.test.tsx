@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Flyout } from './Flyout';
-import { useCardsStore } from '../../store/useCardsStore';
+import { useCardsCheckboxStore } from '../../store/useCardsCheckboxStore';
 import userEvent from '@testing-library/user-event';
 import { DownloadCsv } from '../../utils/file/downloadCsv';
 
@@ -16,7 +16,7 @@ vi.mock('../../utils/file/downloadCsv', () => ({
   DownloadCsv: vi.fn(),
 }));
 beforeEach(() => {
-  useCardsStore.setState({
+  useCardsCheckboxStore.setState({
     selectedCards: [],
   });
 });
@@ -26,7 +26,7 @@ describe('Flyout component', () => {
     expect(screen.queryByRole('form')).not.toBeInTheDocument();
   });
   test('Flyout should be rendered when cards are selected', () => {
-    useCardsStore.setState({
+    useCardsCheckboxStore.setState({
       selectedCards: [card],
     });
     render(<Flyout />);
@@ -34,7 +34,7 @@ describe('Flyout component', () => {
   });
   test('call DownloadCsv', async () => {
     const user = userEvent.setup();
-    useCardsStore.setState({ selectedCards: [card] });
+    useCardsCheckboxStore.setState({ selectedCards: [card] });
 
     render(<Flyout />);
     await user.click(screen.getByText('Download'));

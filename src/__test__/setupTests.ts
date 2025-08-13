@@ -7,6 +7,23 @@ import type { Character } from '../interfaces/apiInterface';
 import { beforeAll, afterEach, afterAll } from 'vitest';
 export const user = userEvent.setup();
 
+export const mockLocalStorage = (() => {
+  const store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+    removeItem: () => {
+      delete store['search'];
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: mockLocalStorage,
+});
+
 export const mockCharacters: Character[] = [
   {
     id: 1,

@@ -1,13 +1,17 @@
 import { type FormEvent } from 'react';
 import { Button } from '../button/Button';
 
-import { useCardsStore } from '../../store/useCardsStore';
+import { useCardsCheckboxStore } from '../../store/useCardsCheckboxStore';
 import { DownloadCsv } from '../../utils/file/downloadCsv';
 
 export const Flyout = () => {
-  const { clearAllCards } = useCardsStore();
-  const cardsCount = useCardsStore((state) => state.selectedCards.length);
-  const selectedCardsIdArray = useCardsStore((state) => state.selectedCards);
+  const { clearAllCards } = useCardsCheckboxStore();
+  const cardsCount = useCardsCheckboxStore(
+    (state) => state.selectedCards.length
+  );
+  const selectedCardsIdArray = useCardsCheckboxStore(
+    (state) => state.selectedCards
+  );
 
   if (cardsCount === 0) return null;
   const currentCardsCountAndTitle =
@@ -21,7 +25,7 @@ export const Flyout = () => {
   };
   return (
     <form
-      className="p-4 border-2 rounded-xl gap-2 flex max-w-fit flex-col sticky bottom-40 left-1/1 shadow-xl bg-gray-500/95"
+      className="p-4 border-2 rounded-xl gap-2 flex max-w-fit flex-col fixed bottom-20 right-4/30 shadow-xl bg-gray-500/95"
       onSubmit={handleFormSubmit}
     >
       <p className="flex justify-center">{currentCardsCountAndTitle}</p>

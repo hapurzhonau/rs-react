@@ -1,13 +1,16 @@
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Search } from './Search';
 import { render, screen } from '@testing-library/react';
-import { user } from '../../__test__/setupTests';
+import { mockLocalStorage, user } from '../../__test__/setupTests';
 
 const mockHandleGetSearchValue = vi.fn();
 
 describe('search component', () => {
+  beforeEach(() => {
+    mockLocalStorage.removeItem();
+  });
   test('renders correctly with initial value from localStorage', () => {
-    localStorage.setItem('search', 'Rick');
+    mockLocalStorage.setItem('search', 'Rick');
     render(<Search handleGetSearchValue={mockHandleGetSearchValue} />);
     const input = screen.getByPlaceholderText(/search/i);
     if (!(input instanceof HTMLInputElement))
@@ -16,7 +19,7 @@ describe('search component', () => {
     expect(input.value).toBe('Rick');
   });
   test('calls handleGetSearchValue on submit with correct value', async () => {
-    localStorage.removeItem('search');
+    mockLocalStorage.removeItem();
     render(<Search handleGetSearchValue={mockHandleGetSearchValue} />);
     const input = screen.getByPlaceholderText(/search/i);
     const button = screen.getByRole('search');

@@ -3,23 +3,22 @@ import {
   ArrowLeftCircleIcon,
   ArrowRightCircleIcon,
 } from '@heroicons/react/24/outline';
+
 interface PaginationProps {
-  page: number;
   totalPages: number;
-  onPrev: (page: number) => void;
-  onNext: (page: number) => void;
+  page: number;
+  handlePageChange: (page: number) => void;
 }
 
 export const Pagination = ({
-  page,
   totalPages,
-  onPrev,
-  onNext,
+  handlePageChange,
+  page,
 }: PaginationProps) => {
   return (
     <div className="flex gap-2 justify-center items-center">
       <Button
-        onClick={() => onPrev(page - 1)}
+        onClick={() => handlePageChange(page - 1)}
         disabled={page <= 1}
         className="border-0 rounded-full p-1"
       >
@@ -29,7 +28,7 @@ export const Pagination = ({
         {page} / {totalPages}
       </span>
       <Button
-        onClick={() => onNext(page + 1)}
+        onClick={() => handlePageChange(page + 1)}
         disabled={page >= totalPages}
         className="border-0 rounded-full p-1"
       >

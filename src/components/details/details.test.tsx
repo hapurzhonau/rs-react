@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { vi, describe, beforeEach, expect, test } from 'vitest';
 import { Details } from './Details';
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 vi.mock('react-router-dom', async (importOriginal) => {
   const actual = await importOriginal<typeof import('react-router-dom')>();
   return {
@@ -36,14 +36,22 @@ describe('Details component', () => {
     );
 
     render(
-      <MemoryRouter initialEntries={['/details/1?page=1']}>
-        <Routes>
-          <Route path="/details/:id" element={<Details />} />
-        </Routes>
-      </MemoryRouter>
+      <QueryClientProvider
+        client={
+          new QueryClient({
+            defaultOptions: { queries: { retry: false } },
+          })
+        }
+      >
+        <MemoryRouter initialEntries={['/details/1?page=1']}>
+          <Routes>
+            <Route path="/details/:id" element={<Details />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>
     );
 
-    expect(screen.getByText(/Loading details.../i)).toBeDefined();
+    expect(screen.getByText(/status.../i)).toBeDefined();
 
     await waitFor(() => {
       expect(

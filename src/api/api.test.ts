@@ -12,11 +12,10 @@ const mockCharactersResponse = {
   },
   results: mockCharacters,
 };
-describe('api request behavior', async () => {
+describe('getAllCharacters', async () => {
   test('ok', async () => {
     const result = await getAllCharacters();
     expect(result).toEqual(mockCharactersResponse);
-    expect(result.error).toBeUndefined();
   });
   test('error', async () => {
     server.use(
@@ -27,18 +26,12 @@ describe('api request behavior', async () => {
         );
       })
     );
-    const result = await getAllCharacters();
-    expect(result.error).toBeDefined();
-    expect(typeof result.error).toBe('string');
-    expect(result.error).toBe('There is nothing here');
-    expect(result.results).toHaveLength(0);
+    await expect(getAllCharacters()).rejects.toThrow('There is nothing here');
   });
   test('unknown error', async () => {
     const originalFetch = global.fetch;
     global.fetch = vi.fn(() => Promise.reject('some unknown error'));
-    const result = await getAllCharacters();
-    expect(result.error).toBe('Unknown error');
-    expect(result.results).toHaveLength(0);
+    await expect(getAllCharacters()).rejects.toThrow('some unknown error');
     global.fetch = originalFetch;
   });
 });

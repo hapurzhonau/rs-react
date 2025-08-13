@@ -37,6 +37,6 @@ describe('cards', () => {
         <Cards cards={[]} />
       </MemoryRouter>
     );
-    expect(screen.getByText(/nothing/i)).toBeInTheDocument();
+    expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
   });
 });

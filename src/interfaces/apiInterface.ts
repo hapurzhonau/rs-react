@@ -4,6 +4,7 @@ export interface ApiResponse {
   results: Character[];
 }
 export interface Character {
+  error?: string | undefined;
   id: number;
   name: string;
   status?: string;

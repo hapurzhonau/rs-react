@@ -6,7 +6,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = ({ children, className, ...rest }: ButtonProps) => {
   return (
-    <button className={`${className || ''}`} {...rest}>
+    <button className={`button ${className || ''}`} {...rest}>
       {children}
     </button>
   );

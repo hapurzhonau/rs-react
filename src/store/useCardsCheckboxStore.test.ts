@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, test } from 'vitest';
-import { useCardsStore } from './useCardsStore';
+import { useCardsCheckboxStore } from './useCardsCheckboxStore';
 import { waitFor } from '@testing-library/react';
 
-describe('useCardsStore', () => {
+describe('useCardsCheckboxStore', () => {
   const card = {
     id: 1,
     name: 'Rick',
@@ -11,35 +11,35 @@ describe('useCardsStore', () => {
     image: 'rick.png',
   };
   beforeEach(() => {
-    useCardsStore.setState({ selectedCards: [] });
+    useCardsCheckboxStore.setState({ selectedCards: [] });
   });
   test('init get is empty', () => {
-    const initState = useCardsStore.getInitialState();
+    const initState = useCardsCheckboxStore.getInitialState();
     expect(initState.selectedCards).toHaveLength(0);
   });
   test('toggling adds a card in store', async () => {
-    const { toggleCard, selectedCards } = useCardsStore.getState();
+    const { toggleCard, selectedCards } = useCardsCheckboxStore.getState();
     expect(selectedCards).toHaveLength(0);
     toggleCard(card);
     await waitFor(() => {
-      expect(useCardsStore.getState().selectedCards).toHaveLength(1);
+      expect(useCardsCheckboxStore.getState().selectedCards).toHaveLength(1);
     });
   });
   test('toggling removes a card from store', async () => {
-    const { toggleCard, selectedCards } = useCardsStore.getState();
+    const { toggleCard, selectedCards } = useCardsCheckboxStore.getState();
     expect(selectedCards).toHaveLength(0);
     toggleCard(card);
     toggleCard(card);
     await waitFor(() => {
-      expect(useCardsStore.getState().selectedCards).toHaveLength(0);
+      expect(useCardsCheckboxStore.getState().selectedCards).toHaveLength(0);
     });
   });
   test('clearAllCards working', () => {
-    const { toggleCard, clearAllCards } = useCardsStore.getState();
+    const { toggleCard, clearAllCards } = useCardsCheckboxStore.getState();
     toggleCard(card);
-    expect(useCardsStore.getState().selectedCards.length).toBe(1);
+    expect(useCardsCheckboxStore.getState().selectedCards.length).toBe(1);
 
     clearAllCards();
-    expect(useCardsStore.getState().selectedCards).toHaveLength(0);
+    expect(useCardsCheckboxStore.getState().selectedCards).toHaveLength(0);
   });
 });

@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { Button } from '../button/Button';
 interface Props {
   handleGetSearchValue: (value: string) => void;
 }
@@ -27,12 +28,12 @@ export const Search = ({ handleGetSearchValue }: Props) => {
         value={inputState}
         onChange={handleOnchange}
       />
-      <button
+      <Button
         className="rounded-none rounded-r-2xl border-l-0 border-1 px-4"
         role="search"
       >
         <MagnifyingGlassIcon />
-      </button>
+      </Button>
     </form>
   );
 };
