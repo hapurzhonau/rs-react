@@ -1,15 +1,17 @@
+'use client';
 import { Search } from '../components/search/Search';
 import { Cards } from '../components/cards/Cards';
 import { CardsSkeleton } from '../components/skeletons/CardsSkeleton';
-import { Outlet, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { Flyout } from '../components/flyout/Flyout';
 import { Pagination } from '../components/navigation/Pagination';
 import { useGetCards } from '../utils/custom-hook/useGetCards';
 import { Button } from '../components/button/Button';
+// import { useParams } from 'next/navigation';
 
 export const MainPage = () => {
-  const { id: details } = useParams();
+  // const params = useParams<{ details: string }>();
+  // const details = params?.details;
   const {
     cards,
     handleGetSearchValue,
@@ -59,9 +61,8 @@ export const MainPage = () => {
         {!isLoading && (
           <>
             <Pagination {...pagination} />
-            <div role="complementary" className={clsx(details && 'flex')}>
+            <div role="complementary">
               <Cards cards={cards} isError={isError} error={error} />
-              <Outlet />
             </div>
             <Pagination {...pagination} />
             <Flyout />

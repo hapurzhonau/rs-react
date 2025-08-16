@@ -1,4 +1,5 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+'use client';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { Character } from '../../interfaces/apiInterface';
 import { useCardsCheckboxStore } from '../../store/useCardsCheckboxStore';
 import { Button } from '../button/Button';
@@ -10,15 +11,16 @@ interface Props {
 }
 
 export const Cards = ({ cards, isError, error }: Props) => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const navigate = (path: string) => {
+    router.push(path);
+  };
+
   const { toggleCard, isSelected } = useCardsCheckboxStore();
   const handleClick = (id: string) => {
-    const prevParams = new URLSearchParams(searchParams);
-    navigate({
-      pathname: `details/${id}`,
-      search: prevParams.toString(),
-    });
+    const prevParams = new URLSearchParams(searchParams || '');
+    navigate(`details/${id}?${prevParams.toString()}`);
   };
 
   if (isError) {

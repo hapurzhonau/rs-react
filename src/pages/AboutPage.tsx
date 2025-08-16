@@ -1,29 +1,29 @@
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 
 export const AboutPage = () => (
   <div>
     <h1>ABOUT</h1>
     <div className="gap-4 flex">
       <p>Author:</p>
-      <NavLink
+      <Link
         className="text-gray-500"
-        to="https://github.com/hapurzhonau"
+        href="https://github.com/hapurzhonau"
         target="_blank"
         rel="noopener noreferrer"
       >
         hapurzhonau
-      </NavLink>
+      </Link>
     </div>
     <div className="gap-4 flex">
       <p>Recourse:</p>
-      <NavLink
-        to="https://rs.school/courses/reactjs"
+      <Link
+        href="https://rs.school/courses/reactjs"
         target="_blank"
         rel="noopener noreferrer"
         className="text-gray-500"
       >
         RS School 2025
-      </NavLink>
+      </Link>
     </div>
   </div>
 );

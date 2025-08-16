@@ -1,3 +1,4 @@
+'use client';
 import clsx from 'clsx';
 import { useDetailsController } from '../../utils/custom-hook/useDetailsController';
 import { Button } from '../button/Button';
