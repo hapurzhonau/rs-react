@@ -1,7 +1,11 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  distDir: './dist',
-}
- 
-export default nextConfig
+  distDir: './dist'
+};
+
+export default withNextIntl(nextConfig);
