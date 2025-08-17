@@ -21,5 +21,8 @@
     "manyItems": "{count} items are selected",
     "unselectAll": "Unselect all",
     "download": "Download"
+  },
+  "Search": {
+    "search": "Search"
   }
 }

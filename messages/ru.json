@@ -21,5 +21,8 @@
     "manyItems": "Выбрано {count} элементов",
     "unselectAll": "Снять выделение",
     "download": "Скачать"
+  },
+    "Search": {
+    "search": "Поиск"
   }
 }
