@@ -20,7 +20,7 @@ export const Cards = ({ cards, isError, error }: Props) => {
   const { toggleCard, isSelected } = useCardsCheckboxStore();
   const handleClick = (id: string) => {
     const prevParams = new URLSearchParams(searchParams || '');
-    navigate(`details/${id}?${prevParams.toString()}`);
+    navigate(`/${id}?${prevParams.toString()}`);
   };
 
   if (isError) {
