@@ -1,8 +1,4 @@
 {
-  "HomePage": {
-    "title": "Привет!",
-    "about": "О нас"
-  },
   "HeaderNavBar": {
     "home": "Домой",
     "about": "О нас"
@@ -11,5 +7,19 @@
     "title": "О нас",
     "author": "Автор",
     "recourses": "Ресурсы"
+  },
+  "Main": {
+    "load": "Загрузка",
+    "fetch": "Запрос",
+    "ok": "Ок",
+    "error": "Ошибка",
+    "refetch": "Обновить",
+    "invalidate": "Сбросить кэш"
+  },
+  "Flyout": {
+    "oneItem": "Выбран {count} элемент",
+    "manyItems": "Выбрано {count} элементов",
+    "unselectAll": "Снять выделение",
+    "download": "Скачать"
   }
 }

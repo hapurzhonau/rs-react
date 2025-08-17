@@ -1,4 +1,5 @@
 'use client';
+
 import { Search } from '../components/search/Search';
 import { Cards } from '../components/cards/Cards';
 import { CardsSkeleton } from '../components/skeletons/CardsSkeleton';
@@ -7,11 +8,10 @@ import { Flyout } from '../components/flyout/Flyout';
 import { Pagination } from '../components/navigation/Pagination';
 import { useGetCards } from '../utils/custom-hook/useGetCards';
 import { Button } from '../components/button/Button';
-// import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export const MainPage = () => {
-  // const params = useParams<{ details: string }>();
-  // const details = params?.details;
+  const t = useTranslations('Main');
   const {
     cards,
     handleGetSearchValue,
@@ -33,7 +33,7 @@ export const MainPage = () => {
             isLoading ? 'bg-green-400' : 'bg-blue-400'
           )}
         >
-          Load
+          {t('load')}
         </div>
         <div
           className={clsx(
@@ -41,7 +41,7 @@ export const MainPage = () => {
             isFetching ? 'bg-green-400' : 'bg-blue-400'
           )}
         >
-          Fetch
+          {t('fetch')}
         </div>
         <div
           className={clsx(
@@ -49,10 +49,10 @@ export const MainPage = () => {
             !isError ? 'bg-blue-400' : 'bg-red-400'
           )}
         >
-          {!isError ? 'Ok' : 'Error'}
+          {!isError ? t('ok') : t('error')}
         </div>
-        <Button onClick={() => refetch()}>refetch</Button>
-        <Button onClick={invalidateCache}>invalidate</Button>
+        <Button onClick={() => refetch()}>{t('refetch')}</Button>
+        <Button onClick={invalidateCache}>{t('invalidate')}</Button>
       </div>
       <section role="region" className="flex-1 flex flex-col gap-4">
         <Search handleGetSearchValue={handleGetSearchValue} />

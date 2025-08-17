@@ -4,8 +4,10 @@ import { type FormEvent } from 'react';
 import { Button } from '../button/Button';
 import { useCardsCheckboxStore } from '../../store/useCardsCheckboxStore';
 import type { Character } from '../../interfaces/apiInterface';
+import { useTranslations } from 'next-intl';
 
 export const Flyout = () => {
+  const t = useTranslations('Flyout');
   const { clearAllCards } = useCardsCheckboxStore();
   const selectedCards = useCardsCheckboxStore((state) => state.selectedCards);
   const cardsCount = selectedCards.length;
@@ -13,7 +15,9 @@ export const Flyout = () => {
   if (cardsCount === 0) return null;
 
   const currentCardsCountAndTitle =
-    cardsCount + (cardsCount > 1 ? ' items are selected' : ' item is selected');
+    cardsCount === 1
+      ? t('oneItem', { count: cardsCount })
+      : t('manyItems', { count: cardsCount });
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +26,7 @@ export const Flyout = () => {
   const handleDownload = async () => {
     const res = await fetch('/api/download', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(selectedCards as Character[]),
     });
 
@@ -45,9 +50,11 @@ export const Flyout = () => {
     >
       <p className="flex justify-center">{currentCardsCountAndTitle}</p>
       <div className="gap-4 flex max-w-fit ">
-        <Button onClick={clearAllCards}>Unselect all</Button>
-        <Button type="submit" onClick={handleDownload}>
-          Download
+        <Button onClick={clearAllCards} type="button">
+          {t('unselectAll')}
+        </Button>
+        <Button type="button" onClick={handleDownload}>
+          {t('download')}
         </Button>
       </div>
     </form>
