@@ -9,8 +9,7 @@ export const useDetailsController = () => {
   const router = useRouter();
 
   const handleGoHome = () => {
-    const query = searchParams?.toString();
-    router.push(query ? `/?${query}` : '/');
+    router.push(`/?${searchParams?.toString()}`);
   };
 
   const { isLoading, isFetching, error, data, refetch, isError } =

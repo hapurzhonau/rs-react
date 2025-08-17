@@ -57,7 +57,12 @@ export const Details = () => {
         {character && (
           <>
             <h2 className="text-xl font-bold">{character.name}</h2>
-            <Image src={character.image} alt={character.name} />
+            <Image
+              width={300}
+              height={300}
+              src={character.image}
+              alt={character.name}
+            />
             <p>Status: {character.status}</p>
             <p>Species: {character.species}</p>
             <p>Gender: {character.gender}</p>

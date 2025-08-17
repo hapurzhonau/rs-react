@@ -40,6 +40,8 @@ export const Cards = ({ cards, isError, error }: Props) => {
             className="block w-full border-0"
           >
             <Image
+              width={300}
+              height={300}
               className="w-full object-cover rounded-t-sm"
               src={card.image}
               alt={card.name}
