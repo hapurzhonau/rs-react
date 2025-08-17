@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { Character } from '../../interfaces/apiInterface';
 import { useCardsCheckboxStore } from '../../store/useCardsCheckboxStore';
 import { Button } from '../button/Button';
+import Image from 'next/image';
 
 interface Props {
   cards: Character[];
@@ -38,7 +39,7 @@ export const Cards = ({ cards, isError, error }: Props) => {
             onClick={() => handleClick(card.id.toString())}
             className="block w-full border-0"
           >
-            <img
+            <Image
               className="w-full object-cover rounded-t-sm"
               src={card.image}
               alt={card.name}

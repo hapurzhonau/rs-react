@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { useDetailsController } from '../../utils/custom-hook/useDetailsController';
 import { Button } from '../button/Button';
 import { DetailsSkeleton } from '../skeletons/DetailsSkeleton';
+import Image from 'next/image';
 
 export const Details = () => {
   const {
@@ -56,7 +57,7 @@ export const Details = () => {
         {character && (
           <>
             <h2 className="text-xl font-bold">{character.name}</h2>
-            <img src={character.image} alt={character.name} />
+            <Image src={character.image} alt={character.name} />
             <p>Status: {character.status}</p>
             <p>Species: {character.species}</p>
             <p>Gender: {character.gender}</p>

@@ -1,6 +1,6 @@
-import { getAllCharacters } from '../../../api/Api';
-import { Details } from '../../../components/details/Details';
-import { Character } from '../../../interfaces/apiInterface';
+import { getAllCharacters } from '../../../../api/Api';
+import { Details } from '../../../../components/details/Details';
+import { Character } from '../../../../interfaces/apiInterface';
 
 export async function generateStaticParams() {
   let page = 1;

@@ -3,8 +3,8 @@ import { Button } from '../button/Button';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
 import LocaleSwitcher from '../localSwitcher/LocalSwitcher';
+import { Link } from '../../i18n/navigation';
 export const HeaderNavbar = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const currentIcon =
