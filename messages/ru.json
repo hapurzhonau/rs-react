@@ -2,5 +2,14 @@
   "HomePage": {
     "title": "Привет!",
     "about": "О нас"
+  },
+  "HeaderNavBar": {
+    "home": "Домой",
+    "about": "О нас"
+  },
+  "About": {
+    "title": "О нас",
+    "author": "Автор",
+    "recourses": "Ресурсы"
   }
 }

@@ -5,6 +5,7 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import LocaleSwitcher from '../localSwitcher/LocalSwitcher';
 import { Link } from '../../i18n/navigation';
+import { useTranslations } from 'next-intl';
 export const HeaderNavbar = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const currentIcon =
@@ -12,12 +13,13 @@ export const HeaderNavbar = () => {
   const handleClick = () => {
     toggleTheme();
   };
+  const t = useTranslations('HeaderNavBar');
   return (
     <header className="p-4 bg-gray-700 flex gap-4 dark:bg-gray-300">
       <nav className="flex justify-between max-w-full w-full">
         <div className="flex gap-8">
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
+          <Link href="/">{t('home')}</Link>
+          <Link href="/about">{t('about')}</Link>
         </div>
         <Button onClick={handleClick} className="border-0 rounded-full p-1">
           {currentIcon}

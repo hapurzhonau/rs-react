@@ -2,5 +2,16 @@
   "HomePage": {
     "title": "Hello!",
     "about": "About us"
-  }
+  },
+  "HeaderNavBar": {
+    "home": "Home",
+    "about": "About"
+  },
+  
+    "About": {
+      "title": "About",
+      "author": "Author",
+      "recourses": "Recourses"
+    }
+  
 }
