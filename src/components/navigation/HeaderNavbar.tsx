@@ -7,16 +7,13 @@ export const HeaderNavbar = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const currentIcon =
     theme === 'dark' ? <SunIcon stroke-width="1.8" /> : <MoonIcon />;
-  const handleClick = () => {
-    toggleTheme();
-  };
   return (
     <nav className="flex justify-between max-w-full w-full">
       <div className="flex gap-8">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
       </div>
-      <Button onClick={handleClick} className="border-0 rounded-full p-1">
+      <Button onClick={toggleTheme} className="border-0 rounded-full p-1">
         {currentIcon}
       </Button>
     </nav>
