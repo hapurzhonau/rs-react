@@ -1,13 +1,13 @@
 'use client';
 
-import { Search } from '../components/search/Search';
-import { Cards } from '../components/cards/Cards';
-import { CardsSkeleton } from '../components/skeletons/CardsSkeleton';
+import { Search } from './search/Search';
+import { Cards } from './cards/Cards';
+import { CardsSkeleton } from './skeletons/CardsSkeleton';
 import clsx from 'clsx';
-import { Flyout } from '../components/flyout/Flyout';
-import { Pagination } from '../components/navigation/Pagination';
+import { Flyout } from './flyout/Flyout';
+import { Pagination } from './navigation/Pagination';
 import { useGetCards } from '../utils/custom-hook/useGetCards';
-import { Button } from '../components/button/Button';
+import { Button } from './button/Button';
 import { useTranslations } from 'next-intl';
 
 export const MainPage = () => {
