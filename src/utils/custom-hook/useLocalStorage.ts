@@ -7,8 +7,11 @@ export function useLocalStorage(
   initialValue: string
 ): ReturnTypes {
   const [value, setValue] = useState<string>(() => {
-    const storedValue = localStorage.getItem(key);
-    return storedValue !== null ? storedValue : initialValue;
+    if (typeof window !== 'undefined') {
+      const storedValue = localStorage.getItem(key);
+      return storedValue !== null ? storedValue : initialValue;
+    }
+    return initialValue;
   });
 
   const setStoredValue = (newValue: string) => {

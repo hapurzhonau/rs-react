@@ -1,13 +1,14 @@
-import { useSearchParams } from 'react-router-dom';
+'use client';
 import { useLocalStorage } from './useLocalStorage';
 import { useGetCharactersQuery } from './useGetCharactersQuery';
-import { useCallback } from 'react';
 import { queryClient } from '../../lib/queryClient';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export const useGetCards = () => {
   const [searchValue, setSearchValue] = useLocalStorage('search', '');
-
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const params = useSearchParams();
+  const searchParams = new URLSearchParams(params || '');
   const page = Number(searchParams.get('page') || 1);
   const name = searchParams.get('name') || '';
 
@@ -19,19 +20,17 @@ export const useGetCards = () => {
   };
   const cards = data?.results || [];
   const totalPages = data?.info.pages || 1;
-  const handlePageChange = useCallback(
-    (newPage: number) => {
-      if (newPage >= 1 && newPage <= totalPages) {
-        searchParams.set('page', newPage.toString());
-        setSearchParams(searchParams);
-      }
-    },
-    [searchParams, setSearchParams, totalPages]
-  );
-
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      searchParams.set('page', newPage.toString());
+      router.push(`/?${searchParams.toString()}`);
+    }
+  };
   const handleGetSearchValue = (value: string) => {
     setSearchValue(value);
-    setSearchParams({ page: '1', name: value });
+    searchParams.set('page', '1');
+    searchParams.set('name', value);
+    router.push(`/?${searchParams.toString()}`);
   };
 
   const pagination = {

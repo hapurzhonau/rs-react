@@ -1,0 +1,28 @@
+{
+  "HeaderNavBar": {
+    "home": "Home",
+    "about": "About"
+  },
+  "About": {
+    "title": "About",
+    "author": "Author",
+    "recourses": "Recourses"
+  },
+  "Main": {
+    "load": "Load",
+    "fetch": "Fetch",
+    "ok": "Ok",
+    "error": "Error",
+    "refetch": "Refetch",
+    "invalidate": "Invalidate"
+  },
+    "Flyout": {
+    "oneItem": "{count} item is selected",
+    "manyItems": "{count} items are selected",
+    "unselectAll": "Unselect all",
+    "download": "Download"
+  },
+  "Search": {
+    "search": "Search"
+  }
+}

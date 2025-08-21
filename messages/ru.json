@@ -1,0 +1,28 @@
+{
+  "HeaderNavBar": {
+    "home": "Домой",
+    "about": "О нас"
+  },
+  "About": {
+    "title": "О нас",
+    "author": "Автор",
+    "recourses": "Ресурсы"
+  },
+  "Main": {
+    "load": "Загрузка",
+    "fetch": "Запрос",
+    "ok": "Ок",
+    "error": "Ошибка",
+    "refetch": "Обновить",
+    "invalidate": "Сбросить кэш"
+  },
+  "Flyout": {
+    "oneItem": "Выбран {count} элемент",
+    "manyItems": "Выбрано {count} элементов",
+    "unselectAll": "Снять выделение",
+    "download": "Скачать"
+  },
+    "Search": {
+    "search": "Поиск"
+  }
+}

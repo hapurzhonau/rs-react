@@ -1,15 +1,20 @@
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+'use client';
+import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { useGetDetailsQuery } from './useGetDetailsQuery';
 import { queryClient } from '../../lib/queryClient';
 
 export const useDetailsController = () => {
-  const { id } = useParams();
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const handleGoHome = () =>
-    navigate({ pathname: '/', search: searchParams.toString() });
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const handleGoHome = () => {
+    router.push(`/?${searchParams?.toString()}`);
+  };
+
   const { isLoading, isFetching, error, data, refetch, isError } =
-    useGetDetailsQuery(id);
+    useGetDetailsQuery(params?.id as string);
+
   const invalidateCache = () => {
     queryClient.invalidateQueries({ queryKey: ['details'] });
   };

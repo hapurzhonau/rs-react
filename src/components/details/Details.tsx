@@ -1,9 +1,13 @@
+'use client';
 import clsx from 'clsx';
 import { useDetailsController } from '../../utils/custom-hook/useDetailsController';
 import { Button } from '../button/Button';
 import { DetailsSkeleton } from '../skeletons/DetailsSkeleton';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 export const Details = () => {
+  const t = useTranslations('Main');
   const {
     character,
     handleGoHome,
@@ -24,7 +28,7 @@ export const Details = () => {
               isLoading ? 'bg-green-400' : 'bg-blue-400'
             )}
           >
-            Load
+            {t('load')}
           </div>
           <div
             className={clsx(
@@ -32,7 +36,7 @@ export const Details = () => {
               isFetching ? 'bg-green-400' : 'bg-blue-400'
             )}
           >
-            Fetch
+            {t('fetch')}
           </div>
           <div
             className={clsx(
@@ -40,10 +44,10 @@ export const Details = () => {
               !isError ? 'bg-blue-400' : 'bg-red-400'
             )}
           >
-            {!isError ? 'Ok' : 'Error'}
+            {!isError ? t('ok') : t('error')}
           </div>
-          <Button onClick={() => refetch()}>refetch</Button>
-          <Button onClick={invalidateCache}>invalidate</Button>
+          <Button onClick={() => refetch()}>{t('refetch')}</Button>
+          <Button onClick={invalidateCache}>{t('invalidate')}</Button>
         </div>
         <Button onClick={handleGoHome} className="border-orange-400">
           Close
@@ -55,7 +59,12 @@ export const Details = () => {
         {character && (
           <>
             <h2 className="text-xl font-bold">{character.name}</h2>
-            <img src={character.image} alt={character.name} />
+            <Image
+              width={300}
+              height={300}
+              src={character.image}
+              alt={character.name}
+            />
             <p>Status: {character.status}</p>
             <p>Species: {character.species}</p>
             <p>Gender: {character.gender}</p>
