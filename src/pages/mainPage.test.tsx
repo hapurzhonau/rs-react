@@ -16,7 +16,7 @@ describe('MainPage component', () => {
   });
 
   test('initial render', async () => {
-    const button = screen.getByRole('button', { name: /search/i });
+    const button = screen.getByRole('search');
     const input = screen.getByPlaceholderText(/search/i);
     const cardsList = await screen.findAllByRole('listitem', { busy: false });
 
@@ -30,7 +30,7 @@ describe('MainPage component', () => {
 
   test('successful search shows 1 result', async () => {
     const input = screen.getByPlaceholderText(/search/i);
-    const button = screen.getByRole('button', { name: /search/i });
+    const button = screen.getByRole('search');
 
     await user.type(input, 'test');
     expect(input).toHaveValue('test');
@@ -44,7 +44,7 @@ describe('MainPage component', () => {
 
   test('unsuccessful search shows error message', async () => {
     const input = screen.getByPlaceholderText(/search/i);
-    const button = screen.getByRole('button', { name: /search/i });
+    const button = screen.getByRole('search');
 
     await user.type(input, 'error');
     expect(input).toHaveValue('error');

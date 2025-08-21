@@ -1,8 +1,13 @@
-@import "tailwindcss";
-
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 @layer base {
   body {
-    @apply text-white bg-gray-800;
+    @apply text-white bg-gray-800 dark:text-black dark:bg-white;
+  }
+  button {
+    @apply border-2 rounded-sm px-3 bg-gray-700 cursor-pointer max-w-fit text-white hover:bg-gray-500 dark:bg-gray-300 dark:text-black dark:hover:bg-gray-400;
+  }
+  svg {
+    @apply h-6;
   }
 }
-

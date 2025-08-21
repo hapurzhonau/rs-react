@@ -3,12 +3,12 @@ import { Search } from '../components/search/Search';
 import { Cards } from '../components/cards/Cards';
 import { getAllCharacters } from '../api/Api';
 import type { Character } from '../interfaces/apiInterface';
-import { ButtonError } from '../components/buttonError/ButtonError';
 import { CardsSkeleton } from '../components/cardsSkeleton/CardsSkeleton';
-import { Button } from '../components/button/Button';
 import { Outlet, useParams, useSearchParams } from 'react-router-dom';
 import { useLocalStorage } from '../utils/custom-hook/useLocalStorage';
 import clsx from 'clsx';
+import { Flyout } from '../components/flyout/Flyout';
+import { Pagination } from '../components/navigation/Pagination';
 
 export const MainPage = () => {
   const [cards, setCards] = useState<Character[]>([]);
@@ -56,48 +56,40 @@ export const MainPage = () => {
   }, [getCharacters]);
 
   return (
-    <>
-      <section role="region" className="flex-1 flex flex-col gap-4">
-        <ButtonError />
-        <Search handleGetSearchValue={handleGetSearchValue} />
-        {isLoading ? (
-          <CardsSkeleton />
-        ) : error ? (
-          <h3>{error}</h3>
-        ) : (
-          <>
-            <div
-              role="complementary"
-              className={clsx('first', details && 'flex', 'second')}
-            >
-              <Cards cards={cards} />
-              {details && (
-                <aside className="w-1/3 border-l pl-4">
-                  <Outlet />
-                </aside>
-              )}
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="light"
-                onClick={() => handlePageChange(page - 1)}
-                disabled={page <= 1}
-              >
-                Prev
-              </Button>
-              <span>
-                {page} / {totalPages}
-              </span>
-              <Button
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page >= totalPages}
-              >
-                Next
-              </Button>
-            </div>
-          </>
-        )}
-      </section>
-    </>
+    <section role="region" className="flex-1 flex flex-col gap-4">
+      <Search handleGetSearchValue={handleGetSearchValue} />
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPrev={() => handlePageChange(page - 1)}
+        onNext={() => handlePageChange(page + 1)}
+      />
+      {isLoading ? (
+        <CardsSkeleton />
+      ) : error ? (
+        <h3>{error}</h3>
+      ) : (
+        <>
+          <div
+            role="complementary"
+            className={clsx('first', details && 'flex', 'second')}
+          >
+            <Cards cards={cards} />
+            {details && (
+              <aside className="w-3/5 border-l pl-4">
+                <Outlet />
+              </aside>
+            )}
+          </div>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPrev={() => handlePageChange(page - 1)}
+            onNext={() => handlePageChange(page + 1)}
+          />
+          <Flyout />
+        </>
+      )}
+    </section>
   );
 };

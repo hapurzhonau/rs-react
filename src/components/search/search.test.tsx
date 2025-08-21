@@ -19,7 +19,7 @@ describe('search component', () => {
     localStorage.removeItem('search');
     render(<Search handleGetSearchValue={mockHandleGetSearchValue} />);
     const input = screen.getByPlaceholderText(/search/i);
-    const button = screen.getByRole('button', { name: /search/i });
+    const button = screen.getByRole('search');
     if (!(input instanceof HTMLInputElement))
       throw new Error('Element should be input');
     await user.type(input, 'Morty');
@@ -30,7 +30,7 @@ describe('search component', () => {
   test('submits empty string when input is cleared', async () => {
     render(<Search handleGetSearchValue={mockHandleGetSearchValue} />);
     const input = screen.getByPlaceholderText(/search/i);
-    const button = screen.getByRole('button', { name: /search/i });
+    const button = screen.getByRole('search');
     if (!(input instanceof HTMLInputElement))
       throw new Error('Element should be input');
 

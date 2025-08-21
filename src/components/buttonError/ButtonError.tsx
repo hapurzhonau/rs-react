@@ -7,12 +7,5 @@ export const ButtonError = () => {
     setIsError((prev: boolean) => !prev);
   };
 
-  return (
-    <button
-      onClick={handleError}
-      className="border-2 rounded-sm px-3 bg-gray-700 cursor-pointer max-w-fit"
-    >
-      Error
-    </button>
-  );
+  return <button onClick={handleError}>Error</button>;
 };

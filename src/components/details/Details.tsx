@@ -33,9 +33,7 @@ export const Details = () => {
   if (!character) return null;
   return (
     <div className="flex flex-col gap-4">
-      <Button variant="light" onClick={handleGoHome}>
-        Close
-      </Button>
+      <Button onClick={handleGoHome}>Close</Button>
       <h2 className="text-xl font-bold">{character.name}</h2>
       <img src={character.image} alt={character.name} />
       <p>Status: {character.status}</p>
