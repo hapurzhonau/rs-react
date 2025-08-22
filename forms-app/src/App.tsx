@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="p-6">
       <Button onClick={open}>Open Modal</Button>
-      <Modal>
+      <Modal title="uncontrolled">
         <h2>MODAL</h2>
       </Modal>
     </div>
