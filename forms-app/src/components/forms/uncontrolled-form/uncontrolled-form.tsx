@@ -1,5 +1,5 @@
 import { type FormEvent, useRef, useState } from 'react';
-import { useFormStore } from '../../../store/use-form-store';
+import { useUncontrolledFormStore } from '../../../store/use-uncontrolled-form-store';
 import { useModalStore } from '../../../store/use-modal-store';
 import { useCountryStore } from '../../../store/use-country-store';
 import { Button } from '../../button/button';
@@ -22,7 +22,7 @@ interface FormErrors {
 export const UncontrolledForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const { close } = useModalStore();
-  const { addData } = useFormStore();
+  const { addData } = useUncontrolledFormStore();
   const { countries } = useCountryStore();
   const [errors, setErrors] = useState<FormErrors>({});
   const [filteredCountries, setFilteredCountries] =
@@ -64,8 +64,8 @@ export const UncontrolledForm = () => {
     }
     if (!ageRaw) {
       newErrors.age = 'Age is required';
-    } else if (isNaN(age) || age < 0) {
-      newErrors.age = 'Age must be a positive number';
+    } else if (isNaN(age) || age < 12) {
+      newErrors.age = 'Age must be higher than 11';
     }
     if (!isValidEmail(email)) {
       newErrors.email = 'Invalid email';
@@ -142,8 +142,12 @@ export const UncontrolledForm = () => {
       onSubmit={onSubmit}
       className="space-y-6 relative"
     >
-      <div>
-        {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+      <div className="relative">
+        {errors.name && (
+          <p className="text-red-500 text-xs absolute bottom-6">
+            {errors.name}
+          </p>
+        )}
         <label htmlFor="name">Name:</label>
         <input
           id="name"
@@ -154,8 +158,10 @@ export const UncontrolledForm = () => {
         />
       </div>
 
-      <div>
-        {errors.age && <p className="text-red-500 text-xs">{errors.age}</p>}
+      <div className="relative">
+        {errors.age && (
+          <p className="text-red-500 text-xs absolute bottom-6">{errors.age}</p>
+        )}
         <label htmlFor="age">Age:</label>
         <input
           id="age"
@@ -166,8 +172,12 @@ export const UncontrolledForm = () => {
         />
       </div>
 
-      <div>
-        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+      <div className="relative">
+        {errors.email && (
+          <p className="text-red-500 text-xs absolute bottom-6">
+            {errors.email}
+          </p>
+        )}
         <label htmlFor="email">Email:</label>
         <input
           id="email"
@@ -178,9 +188,9 @@ export const UncontrolledForm = () => {
         />
       </div>
 
-      <div>
+      <div className="relative pt-3">
         {errors.password && (
-          <div className="text-red-500 text-xs flex flex-wrap w-full max-w-80">
+          <div className="text-red-500 text-xs flex flex-wrap w-full max-w-80 absolute bottom-6">
             {errors.password.map((err, i) => (
               <p key={i}>{err}</p>
             ))}
@@ -195,9 +205,11 @@ export const UncontrolledForm = () => {
         />
       </div>
 
-      <div>
+      <div className="relative">
         {errors.confirmPassword && (
-          <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
+          <p className="text-red-500 text-xs absolute bottom-6">
+            {errors.confirmPassword}
+          </p>
         )}
         <label htmlFor="confirmPassword">Confirm Password:</label>
         <input
@@ -208,9 +220,11 @@ export const UncontrolledForm = () => {
         />
       </div>
 
-      <div>
+      <div className="relative">
         {errors.gender && (
-          <p className="text-red-500 text-xs">{errors.gender}</p>
+          <p className="text-red-500 text-xs absolute bottom-6">
+            {errors.gender}
+          </p>
         )}
         <label>Gender:</label>
         <select name="gender" className="border">
@@ -222,7 +236,9 @@ export const UncontrolledForm = () => {
 
       <div className="relative">
         {errors.country && (
-          <p className="text-red-500 text-xs">{errors.country}</p>
+          <p className="text-red-500 text-xs absolute bottom-6">
+            {errors.country}
+          </p>
         )}
         <label htmlFor="country">Country:</label>
         <input
@@ -257,16 +273,24 @@ export const UncontrolledForm = () => {
         )}
       </div>
 
-      <div>
-        {errors.terms && <p className="text-red-500 text-xs">{errors.terms}</p>}
+      <div className="relative">
+        {errors.terms && (
+          <p className="text-red-500 text-xs absolute bottom-6">
+            {errors.terms}
+          </p>
+        )}
         <label>
           <input type="checkbox" name="terms" className="cursor-pointer" />
           Accept Terms and Conditions
         </label>
       </div>
 
-      <div>
-        {errors.file && <p className="text-red-500 text-xs">{errors.file}</p>}
+      <div className="relative">
+        {errors.file && (
+          <p className="text-red-500 text-xs absolute bottom-6">
+            {errors.file}
+          </p>
+        )}
         <label htmlFor="file">Upload picture:</label>
         <input
           id="file"
