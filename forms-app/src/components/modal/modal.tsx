@@ -64,7 +64,7 @@ export const Modal = () => {
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 flex items-center justify-center bg-black/60"
+      className="fixed inset-0 flex justify-center items-center bg-black/60 overflow-y-auto"
       onMouseDown={(e) => {
         if (e.target === overlayRef.current) close();
       }}
@@ -74,7 +74,7 @@ export const Modal = () => {
         tabIndex={-1}
         role="dialog"
         aria-labelledby={titleId}
-        className="bg-white rounded-xl px-6 py-12 shadow-xl relative"
+        className="bg-white rounded-xl px-6 py-12 shadow-xl relative max-h-fit"
       >
         <Button
           className="absolute top-2 right-2 text-white hover:text-gray-600"

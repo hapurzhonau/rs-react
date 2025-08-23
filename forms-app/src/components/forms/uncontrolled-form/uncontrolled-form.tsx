@@ -1,25 +1,43 @@
-import { type FormEvent, useRef } from 'react';
-
+import { type FormEvent, useRef, useState } from 'react';
 import { useFormStore } from '../../../store/use-form-store';
-import { Button } from '../../button/button';
 import { useModalStore } from '../../../store/use-modal-store';
+import { useCountryStore } from '../../../store/use-country-store';
+import { Button } from '../../button/button';
 
 const isValidEmail = (email: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-const isStrongPassword = (password: string) => {
-  return (
-    /[0-9]/.test(password) &&
-    /[A-Z]/.test(password) &&
-    /[a-z]/.test(password) &&
-    /[^A-Za-z0-9]/.test(password)
-  );
-};
+interface FormErrors {
+  name?: string;
+  age?: string;
+  email?: string;
+  password?: string[];
+  confirmPassword?: string;
+  gender?: string;
+  terms?: string;
+  file?: string;
+  country?: string;
+}
 
 export const UncontrolledForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const { close } = useModalStore();
   const { addData } = useFormStore();
+  const { countries } = useCountryStore();
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [filteredCountries, setFilteredCountries] =
+    useState<string[]>(countries);
+  const [isFocused, setIsFocused] = useState(false);
+
+  const validatePassword = (password: string): string[] => {
+    const errs: string[] = [];
+    if (!/[0-9]/.test(password)) errs.push('At least 1 number,');
+    if (!/[A-Z]/.test(password)) errs.push('at least 1 uppercase letter,');
+    if (!/[a-z]/.test(password)) errs.push('at least 1 lowercase letter,');
+    if (!/[^A-Za-z0-9]/.test(password))
+      errs.push('at least 1 special character');
+    return errs;
+  };
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -29,95 +47,145 @@ export const UncontrolledForm = () => {
     const data = new FormData(form);
 
     const name = data.get('name') as string;
-    const age = Number(data.get('age'));
+    const ageRaw = data.get('age') as string;
+    const age = Number(ageRaw);
     const email = data.get('email') as string;
     const password = data.get('password') as string;
     const confirmPassword = data.get('confirmPassword') as string;
     const gender = data.get('gender') as string;
     const terms = data.get('terms') === 'on';
     const file = data.get('file') as File | null;
+    const country = data.get('country') as string;
 
-    // validation
-    const errors: string[] = [];
+    const newErrors: FormErrors = {};
 
-    if (!/^[A-Z]/.test(name)) {
-      errors.push('Name must start with uppercase letter');
+    if (!name || !/^[A-Z]/.test(name)) {
+      newErrors.name = 'Name must start with uppercase letter';
     }
-    if (isNaN(age) || age < 0) {
-      errors.push('Age must be a positive number');
+    if (!ageRaw) {
+      newErrors.age = 'Age is required';
+    } else if (isNaN(age) || age < 0) {
+      newErrors.age = 'Age must be a positive number';
     }
     if (!isValidEmail(email)) {
-      errors.push('Invalid email');
+      newErrors.email = 'Invalid email';
     }
     if (password !== confirmPassword) {
-      errors.push('Passwords must match');
+      newErrors.confirmPassword = 'Passwords must match';
     }
-    if (!isStrongPassword(password)) {
-      errors.push('Password is too weak');
+    const passwordErrors = validatePassword(password);
+    if (passwordErrors.length > 0) {
+      newErrors.password = passwordErrors;
+    }
+    if (!gender) {
+      newErrors.gender = 'Please select gender';
     }
     if (!terms) {
-      errors.push('You must accept Terms and Conditions');
+      newErrors.terms = 'You must accept Terms and Conditions';
+    }
+    if (!country) {
+      newErrors.country = 'Please select country';
+    } else if (!countries.includes(country)) {
+      newErrors.country = 'Please choose a valid country';
     }
     if (file) {
       if (!['image/png', 'image/jpeg'].includes(file.type)) {
-        errors.push('Only PNG/JPEG allowed');
+        newErrors.file = 'Only PNG/JPEG allowed';
       }
       if (file.size > 2 * 1024 * 1024) {
-        errors.push('File too large (max 2MB)');
+        newErrors.file = 'File too large (max 2MB)';
       }
     }
 
-    // pic base64
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const newData = {
-        name,
-        age,
-        email,
-        password,
-        gender,
-        terms,
-        image: reader.result as string,
-        from: 'uncontrolled',
-      };
-      addData(newData);
-      close();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+    const submitData = {
+      name,
+      age,
+      email,
+      password,
+      gender,
+      terms,
+      country,
+      image: '',
+      from: 'uncontrolled',
     };
+
     if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        addData({ ...submitData, image: reader.result as string });
+        close();
+      };
       reader.readAsDataURL(file);
     } else {
-      addData({
-        name,
-        age,
-        email,
-        password,
-        gender,
-        terms,
-        image: '',
-        from: 'uncontrolled',
-      });
+      addData(submitData);
       close();
     }
   };
 
+  const handleCountryInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toLowerCase();
+    setFilteredCountries(
+      countries.filter((c) => c.toLowerCase().includes(value))
+    );
+  };
+
   return (
-    <form noValidate ref={formRef} onSubmit={onSubmit} className="space-y-6">
+    <form
+      noValidate
+      ref={formRef}
+      onSubmit={onSubmit}
+      className="space-y-6 relative"
+    >
       <div>
+        {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
         <label htmlFor="name">Name:</label>
-        <input id="name" name="name" type="text" className="border" />
+        <input
+          id="name"
+          name="name"
+          type="text"
+          className="border"
+          autoComplete="new"
+        />
       </div>
 
       <div>
+        {errors.age && <p className="text-red-500 text-xs">{errors.age}</p>}
         <label htmlFor="age">Age:</label>
-        <input id="age" name="age" type="number" className="border" />
+        <input
+          id="age"
+          name="age"
+          type="number"
+          className="border"
+          autoComplete="off"
+        />
       </div>
 
       <div>
+        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
         <label htmlFor="email">Email:</label>
-        <input id="email" name="email" type="email" className="border" />
+        <input
+          id="email"
+          name="email"
+          type="email"
+          className="border"
+          autoComplete="new"
+        />
       </div>
 
       <div>
+        {errors.password && (
+          <div className="text-red-500 text-xs flex flex-wrap w-full max-w-80">
+            {errors.password.map((err, i) => (
+              <p key={i}>{err}</p>
+            ))}
+          </div>
+        )}
         <label htmlFor="password">Password:</label>
         <input
           id="password"
@@ -128,6 +196,9 @@ export const UncontrolledForm = () => {
       </div>
 
       <div>
+        {errors.confirmPassword && (
+          <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
+        )}
         <label htmlFor="confirmPassword">Confirm Password:</label>
         <input
           id="confirmPassword"
@@ -138,6 +209,9 @@ export const UncontrolledForm = () => {
       </div>
 
       <div>
+        {errors.gender && (
+          <p className="text-red-500 text-xs">{errors.gender}</p>
+        )}
         <label>Gender:</label>
         <select name="gender" className="border">
           <option value="">Select...</option>
@@ -146,22 +220,60 @@ export const UncontrolledForm = () => {
         </select>
       </div>
 
+      <div className="relative">
+        {errors.country && (
+          <p className="text-red-500 text-xs">{errors.country}</p>
+        )}
+        <label htmlFor="country">Country:</label>
+        <input
+          id="country"
+          name="country"
+          type="text"
+          className="border"
+          onInput={handleCountryInput}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setTimeout(() => setIsFocused(false), 100)}
+          autoComplete="new"
+        />
+        {isFocused && filteredCountries.length > 0 && (
+          <ul className="border max-h-20 overflow-y-auto absolute bg-white w-full z-10">
+            {filteredCountries.map((c) => (
+              <li
+                key={c}
+                className="cursor-pointer px-2 hover:bg-gray-100"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  const input = formRef.current?.elements.namedItem(
+                    'country'
+                  ) as HTMLInputElement;
+                  if (input) input.value = c;
+                  setFilteredCountries([]);
+                }}
+              >
+                {c}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       <div>
-        <label className="cursor-pointer">
+        {errors.terms && <p className="text-red-500 text-xs">{errors.terms}</p>}
+        <label>
           <input type="checkbox" name="terms" className="cursor-pointer" />
           Accept Terms and Conditions
         </label>
       </div>
 
-      <div className="border">
-        <label htmlFor="file" className=" cursor-pointer">
-          Upload picture:
-        </label>
+      <div>
+        {errors.file && <p className="text-red-500 text-xs">{errors.file}</p>}
+        <label htmlFor="file">Upload picture:</label>
         <input
           id="file"
           name="file"
           type="file"
           accept="image/png, image/jpeg"
+          className="border cursor-pointer"
         />
       </div>
 
