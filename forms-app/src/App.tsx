@@ -8,10 +8,13 @@ function App() {
   const { open } = useModalStore();
   return (
     <div className="p-6">
-      <Button onClick={open}>Open Modal</Button>
-      <Modal title="uncontrolled">
-        <h2>MODAL</h2>
-      </Modal>
+      <Button onClick={() => open('uncontrolled', 'uncontrolled')}>
+        Uncontrolled
+      </Button>
+      <Button onClick={() => open('controlled', 'controlled')}>
+        Controlled
+      </Button>
+      <Modal />
     </div>
   );
 }
