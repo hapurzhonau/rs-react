@@ -87,7 +87,12 @@ export const ControlledForm = () => {
   };
 
   return (
-    <form noValidate onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form
+      role="form"
+      noValidate
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6"
+    >
       <div className="relative">
         {errors.name && (
           <p className="text-red-500 text-xs absolute bottom-6">
