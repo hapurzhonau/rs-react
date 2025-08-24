@@ -29,7 +29,9 @@ describe('ControlledForm', () => {
     expect(screen.getByLabelText(/^Password:$/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^Confirm Password:$/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Country:/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Accept Terms/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Upload picture:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Submit/i)).toBeInTheDocument();
   });
 
   test('error if submitted empty form', async () => {
