@@ -92,8 +92,8 @@ export const UncontrolledForm = () => {
       if (!['image/png', 'image/jpeg'].includes(file.type)) {
         newErrors.file = 'Only PNG/JPEG allowed';
       }
-      if (file.size > 2 * 1024 * 1024) {
-        newErrors.file = 'File too large (max 2MB)';
+      if (file.size > 5 * 1024 * 1024) {
+        newErrors.file = 'File too large (max 5MB)';
       }
     }
 
