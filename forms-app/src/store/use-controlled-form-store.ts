@@ -10,7 +10,6 @@ export interface ControlledFormSaved {
   terms: boolean | undefined;
   country: string;
   image: string;
-  from: 'controlled';
 }
 
 interface ControlledFormState {

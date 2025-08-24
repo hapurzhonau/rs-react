@@ -56,7 +56,6 @@ export const useCountryStore = create<CountryStore>(() => ({
     'Colombia',
     'Comoros',
     'Congo',
-    'Congo',
     'Cook Islands',
     'Costa Rica',
     'Croatia',

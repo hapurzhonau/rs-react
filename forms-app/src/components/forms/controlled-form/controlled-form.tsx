@@ -79,7 +79,6 @@ export const ControlledForm = () => {
       terms: values.terms,
       country: values.country,
       image,
-      from: 'controlled',
     });
 
     reset();

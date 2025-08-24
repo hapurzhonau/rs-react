@@ -56,16 +56,20 @@ export const makeControlledFormSchema = (countries: string[]) =>
       .oneOf(countries, 'Please choose a valid country'),
 
     file: yup
-
       .mixed<FileList>()
       .required()
-      .test('file-type', 'Only PNG/JPEG allowed', (list) => {
-        const f = list && list.length > 0 ? list[0] : null;
-        return !f || ['image/png', 'image/jpeg'].includes(f.type);
+      .test('file-required', 'File is required', (list) => {
+        return list && list.length > 0;
       })
-      .test('file-size', 'File too large (max 2MB)', (list) => {
-        const f = list && list.length > 0 ? list[0] : null;
-        return !f || f.size <= 2 * 1024 * 1024;
+      .test('file-type', 'Only PNG/JPEG allowed', (list) => {
+        if (!list || list.length === 0) return false;
+        const f = list[0];
+        return ['image/png', 'image/jpeg'].includes(f.type);
+      })
+      .test('file-size', 'File too large (max 5MB)', (list) => {
+        if (!list || list.length === 0) return false;
+        const f = list[0];
+        return f.size <= 5 * 1024 * 1024;
       }),
   });
 

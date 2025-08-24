@@ -9,7 +9,7 @@ export interface UncontrolledFormData {
   terms: boolean;
   image: string;
   password: string;
-  from: string;
+  country: string;
 }
 
 export type UncontrolledFormDataInput = Omit<UncontrolledFormData, 'id'>;
