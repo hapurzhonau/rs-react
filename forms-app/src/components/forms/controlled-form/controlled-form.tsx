@@ -11,7 +11,7 @@ import { useModalStore } from '../../../store/use-modal-store';
 import { Button } from '../../button/button';
 import { useControlledFormStore } from '../../../store/use-controlled-form-store';
 
-export const FormControlled = () => {
+export const ControlledForm = () => {
   const { countries } = useCountryStore();
   const schema = useMemo(
     () => makeControlledFormSchema(countries),

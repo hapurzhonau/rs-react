@@ -2,7 +2,7 @@ import { useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useModalStore } from '../../store/use-modal-store';
 import { Button } from '../button/button';
-import { FormControlled } from '../forms/controlled-form.tsx/controlled-form';
+import { ControlledForm } from '../forms/controlled-form/controlled-form';
 import { UncontrolledForm } from '../forms/uncontrolled-form/uncontrolled-form';
 
 export const Modal = () => {
@@ -90,7 +90,7 @@ export const Modal = () => {
         )}
 
         {type === 'uncontrolled' && <UncontrolledForm />}
-        {type === 'controlled' && <FormControlled />}
+        {type === 'controlled' && <ControlledForm />}
       </div>
     </div>,
     document.body
