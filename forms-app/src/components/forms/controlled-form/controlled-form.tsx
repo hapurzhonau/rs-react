@@ -8,7 +8,7 @@ import {
 import { useCountryStore } from '../../../store/use-country-store';
 import { useModalStore } from '../../../store/use-modal-store';
 import { Button } from '../../button/button';
-import { useControlledFormStore } from '../../../store/use-controlled-form-store';
+import { useFormStore } from '../../../store/use-form-store';
 
 export const ControlledForm = () => {
   const { countries } = useCountryStore();
@@ -52,7 +52,7 @@ export const ControlledForm = () => {
     setFilteredCountries(countries.filter((c) => c.toLowerCase().includes(v)));
   }, [countryValue, countries]);
 
-  const { addData } = useControlledFormStore();
+  const { addData } = useFormStore();
   const { close } = useModalStore();
 
   const onSubmit = async (values: ControlledFormValues) => {
@@ -79,6 +79,7 @@ export const ControlledForm = () => {
       terms: values.terms,
       country: values.country,
       image,
+      from: 'controlled',
     });
 
     reset();

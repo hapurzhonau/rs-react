@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export interface ControlledFormSaved {
+export interface FormData {
   id: number;
   name: string;
   age: number;
@@ -10,14 +10,16 @@ export interface ControlledFormSaved {
   terms: boolean | undefined;
   country: string;
   image: string;
+  from: 'controlled' | 'uncontrolled';
+  confirmPassword?: string;
 }
 
-interface ControlledFormState {
-  forms: ControlledFormSaved[];
-  addData: (data: Omit<ControlledFormSaved, 'id'>) => void;
+interface FormStore {
+  forms: FormData[];
+  addData: (data: Omit<FormData, 'id'>) => void;
 }
 
-export const useControlledFormStore = create<ControlledFormState>((set) => ({
+export const useFormStore = create<FormStore>((set) => ({
   forms: [],
   addData: (data) =>
     set((state) => ({

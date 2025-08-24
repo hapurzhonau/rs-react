@@ -1,5 +1,5 @@
 import { type FormEvent, useRef, useState } from 'react';
-import { useUncontrolledFormStore } from '../../../store/use-uncontrolled-form-store';
+import { useFormStore } from '../../../store/use-form-store';
 import { useModalStore } from '../../../store/use-modal-store';
 import { useCountryStore } from '../../../store/use-country-store';
 import { Button } from '../../button/button';
@@ -22,7 +22,7 @@ interface FormErrors {
 export const UncontrolledForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const { close } = useModalStore();
-  const { addData } = useUncontrolledFormStore();
+  const { addData } = useFormStore();
   const { countries } = useCountryStore();
   const [errors, setErrors] = useState<FormErrors>({});
   const [filteredCountries, setFilteredCountries] =
@@ -118,12 +118,16 @@ export const UncontrolledForm = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        addData({ ...submitData, image: reader.result as string });
+        addData({
+          ...submitData,
+          from: 'uncontrolled',
+          image: reader.result as string,
+        });
         close();
       };
       reader.readAsDataURL(file);
     } else {
-      addData(submitData);
+      addData({ ...submitData, from: 'uncontrolled', image: '' });
       close();
     }
   };
