@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useMemo, useRef, useState } from 'react';
-
 import {
   makeControlledFormSchema,
   type ControlledFormValues,
@@ -262,10 +261,16 @@ export const ControlledForm = () => {
 
       <Button
         type="submit"
-        disabled={!isValid || isSubmitting}
-        className={
+        aria-disabled={!isValid || isSubmitting}
+        className={`${
           !isValid || isSubmitting ? 'bg-pink-300 cursor-auto' : 'bg-pink-500'
-        }
+        }`}
+        onClick={(e) => {
+          if (!isValid || isSubmitting) {
+            e.preventDefault();
+            return;
+          }
+        }}
       >
         {isSubmitting ? 'Submitting...' : 'Submit'}
       </Button>
