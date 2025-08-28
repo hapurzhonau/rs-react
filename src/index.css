@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply text-pink-300 bg-gray-800;
+  }
+  .button {
+    @apply px-3 py-1 bg-pink-500 text-white rounded-lg cursor-pointer max-w-fit
+  }
+}
