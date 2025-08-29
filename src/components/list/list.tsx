@@ -1,21 +1,15 @@
-import { useEffect, useState } from 'react';
+import { use } from 'react';
 import { getData } from '../../get-data/get-data';
 
-export default function List() {
-  const [data, setData] = useState<string[]>([]);
-  useEffect(() => {
-    const fetch = async () => {
-      const rawData = await getData();
-      const countries = Object.keys(rawData);
-      setData(countries);
-    };
-    fetch();
-  }, []);
+const dataPromise = getData();
 
+export default function List() {
+  const rawData = use(dataPromise);
+  const countries = Object.entries(rawData);
   return (
     <div>
       <ul>
-        {data.map((country) => (
+        {countries.map((country) => (
           <li key={country}>{country}</li>
         ))}
       </ul>
