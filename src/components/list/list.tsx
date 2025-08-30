@@ -3,6 +3,7 @@ import { getData } from '../../get-data/get-data';
 import Container from '../container/container';
 import CountryContainer from '../container/country-container';
 import { Modal } from '../modal/modal';
+import ColumnSelector from '../column-selector/column-selector';
 
 interface IYearRow {
   year: number;
@@ -28,18 +29,18 @@ export default function List() {
   const countries = Object.entries(rawData);
 
   const [openCountry, setOpenCountry] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
 
   const handleOpen = (name: string) => {
     setOpenCountry((prev) => (prev === name ? null : name));
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
     <div className="flex max-w-fit mx-auto py-6 flex-col gap-2">
       <button
         onClick={() => setIsModalOpen(true)}
-        className="border rounded-md max-w-fit px-2 cursor-pointer bg-gray-900 hover:bg-gray-700"
+        className="border rounded-md max-w-fit px-2 cursor-pointer bg-gray-700 hover:bg-gray-900"
       >
         Select columns
       </button>
@@ -63,40 +64,58 @@ export default function List() {
               </div>
 
               {openCountry === name && (
-                <div className="max-w-11/12 mx-auto p-2 flex flex-col gap-1 bg-gray-700 text-pink-200 border border-pink-400 rounded-md shadow-black shadow-2xl cursor-auto mt-2">
+                <ul className="max-w-11/12 mx-auto p-2 flex flex-col gap-1 bg-gray-700 text-pink-200 border border-pink-400 rounded-md shadow-black shadow-2xl cursor-auto mt-2">
                   <div className="flex font-bold border-b border-pink-300 pb-1 mb-1">
                     <CountryContainer>Year</CountryContainer>
                     <CountryContainer>Population</CountryContainer>
                     <CountryContainer>CO₂</CountryContainer>
                     <CountryContainer>CO₂ per capita</CountryContainer>
+                    {selectedColumns.includes('methane') && (
+                      <CountryContainer>Methane</CountryContainer>
+                    )}
+                    {selectedColumns.includes('oil-co2') && (
+                      <CountryContainer>Oil CO₂</CountryContainer>
+                    )}
                   </div>
                   {node.data.map((row) => (
-                    <div
+                    <li
                       key={row.year}
                       className="flex justify-between border border-gray-600 px-1"
                     >
-                      <CountryContainer className="flex border-r border-gray-600 px-2 w-full">
-                        {row.year}
-                      </CountryContainer>
-                      <CountryContainer className="flex border-r border-gray-600 px-2 w-full">
+                      <CountryContainer>{row.year}</CountryContainer>
+                      <CountryContainer>
                         {row.population ?? 'N/A'}
                       </CountryContainer>
-                      <CountryContainer className="flex border-r border-gray-600 px-2 w-full">
-                        {row.co2 ?? 'N/A'}
-                      </CountryContainer>
-                      <CountryContainer className="flex border-r border-gray-600 px-2 w-full">
+                      <CountryContainer>{row.co2 ?? 'N/A'}</CountryContainer>
+                      <CountryContainer>
                         {row.co2_per_capita ?? 'N/A'}
                       </CountryContainer>
-                    </div>
+                      {selectedColumns.includes('methane') && (
+                        <CountryContainer>
+                          {row.methane ?? 'N/A'}
+                        </CountryContainer>
+                      )}
+                      {selectedColumns.includes('oil-co2') && (
+                        <CountryContainer>
+                          {row.oil_co2 ?? 'N/A'}
+                        </CountryContainer>
+                      )}
+                    </li>
                   ))}
-                </div>
+                </ul>
               )}
             </li>
           );
         })}
       </ul>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        Select columns
+        <ColumnSelector
+          selected={selectedColumns}
+          onChange={(newCols) => {
+            setSelectedColumns(newCols);
+            setIsModalOpen(false);
+          }}
+        />
       </Modal>
     </div>
   );

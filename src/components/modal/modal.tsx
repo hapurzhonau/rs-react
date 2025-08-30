@@ -16,18 +16,17 @@ export const Modal = ({ children, isOpen, onClose }: IModalProps) => {
       onClick={onClose}
     >
       <div
-        className="bg-gray-600 p-4 rounded-lg min-w-[30vw] shadow-xl relative cursor-auto"
+        className="bg-gray-600 p-4 rounded-lg max-w-fit w-full shadow-xl relative cursor-auto border-pink-500 border flex flex-col pt-16 gap-6"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-gray-300 hover:text-gray-900 cursor-pointer"
+          className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-gray-900 hover:text-gray-300 cursor-pointer border border-pink-400 rounded-md p-3 bg-pink-400"
         >
           ✕
         </button>
         {children}
       </div>
-      <button>Save</button>
     </div>,
     document.body
   );

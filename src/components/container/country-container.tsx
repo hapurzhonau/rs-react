@@ -10,7 +10,7 @@ export default function CountryContainer({
   className,
 }: ItemContainerProps) {
   return (
-    <div className={`lex border-r border-gray-600 px-2 w-full ${className}`}>
+    <div className={`flex border-r border-gray-600 px-2 w-full ${className}`}>
       {children}
     </div>
   );
