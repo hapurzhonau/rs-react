@@ -5,14 +5,12 @@ interface ItemContainerProps {
   className?: string;
 }
 
-export default function ItemContainer({
+export default function CountryContainer({
   children,
   className,
 }: ItemContainerProps) {
   return (
-    <div
-      className={`w-full min-w-[25vw] px-2 flex border-gray-700 ${className}`}
-    >
+    <div className={`lex border-r border-gray-600 px-2 w-full ${className}`}>
       {children}
     </div>
   );
