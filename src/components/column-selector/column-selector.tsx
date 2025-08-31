@@ -19,6 +19,7 @@ export default function ColumnSelector({
 
   return (
     <div className="flex flex-col gap-4">
+      Select columns
       <div className="flex gap-4">
         <div className="flex gap-2 items-center border-pink-400 border p-2 rounded-md">
           <label htmlFor="methane">Methane</label>
