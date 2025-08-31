@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useMemo, useState } from 'react';
 import { getData } from '../../get-data/get-data';
 import Container from '../container/container';
 import CountryContainer from '../container/country-container';
@@ -32,31 +32,18 @@ export default function List() {
   const rawData = use<ICommonJson>(dataPromise);
   const rowCountries = Object.entries(rawData);
 
-  const [countries, setCountries] = useState(rowCountries);
   const [openCountry, setOpenCountry] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [prevYear, setPrevYear] = useState<number | null>(null);
   const [sortValue, setSortValue] = useState('');
-
-  const years =
-    countries.length > 0 ? countries[0][1].data.map((row) => row.year) : [];
-
   const [searchValue, setSearchValue] = useState('');
 
-  const handleSearchValue = (value: string) => {
-    setSearchValue(value);
-    const filteredCountries = rowCountries.filter(([name]) =>
-      name.toLocaleLowerCase().includes(value.toLocaleLowerCase())
-    );
-
-    setCountries(filteredCountries);
-  };
-
-  const handleOpenCountry = (name: string) => {
-    setOpenCountry((prev) => (prev === name ? null : name));
-  };
+  const years =
+    rowCountries.length > 0
+      ? rowCountries[0][1].data.map((row) => row.year)
+      : [];
 
   useEffect(() => {
     if (years.length > 0 && selectedYear === null) {
@@ -65,42 +52,52 @@ export default function List() {
     }
   }, [years, selectedYear]);
 
-  const handleYearChange = (year: number) => {
-    setPrevYear(selectedYear);
-    setSelectedYear(year);
-  };
+  const handleSearchValue = useCallback((value: string) => {
+    setSearchValue(value);
+  }, []);
 
-  useEffect(() => {
-    const sorted = [...countries];
+  const handleOpenCountry = useCallback((name: string) => {
+    setOpenCountry((prev) => (prev === name ? null : name));
+  }, []);
+
+  const handleYearChange = useCallback(
+    (year: number) => {
+      setPrevYear(selectedYear);
+      setSelectedYear(year);
+    },
+    [selectedYear]
+  );
+
+  const filteredAndSortedCountries = useMemo(() => {
+    let result = rowCountries;
+
+    if (searchValue) {
+      result = result.filter(([name]) =>
+        name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
 
     if (sortValue.startsWith('name')) {
-      sorted.sort(([nameA], [nameB]) =>
-        sortValue === 'name-asc'
-          ? nameA.localeCompare(nameB)
-          : nameB.localeCompare(nameA)
+      result = [...result].sort(([a], [b]) =>
+        sortValue === 'name-asc' ? a.localeCompare(b) : b.localeCompare(a)
       );
-    } else if (sortValue.startsWith('pop') && selectedYear) {
-      sorted.sort(([, nodeA], [, nodeB]) => {
+    } else if (sortValue.startsWith('population') && selectedYear) {
+      result = [...result].sort(([, nodeA], [, nodeB]) => {
         const popA =
           nodeA.data.find((d) => d.year === selectedYear)?.population ?? 0;
         const popB =
           nodeB.data.find((d) => d.year === selectedYear)?.population ?? 0;
-
         return sortValue === 'population-asc' ? popA - popB : popB - popA;
       });
     }
 
-    setCountries(sorted);
-  }, [sortValue, selectedYear, searchValue]);
+    return result;
+  }, [rowCountries, searchValue, sortValue, selectedYear]);
 
   return (
     <div className="flex max-w-fit mx-auto py-6 flex-col gap-2">
       <header className="flex gap-20 sticky top-0 p-4 bg-gray-800/85 border-b-4 border-gray-700">
-        <ButtonSelect
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
+        <ButtonSelect onClick={() => setIsModalOpen(true)}>
           Select columns
         </ButtonSelect>
         <YearSelector
@@ -108,15 +105,12 @@ export default function List() {
           years={years}
           selectedYear={selectedYear ?? 0}
         />
-        <SearchInput
-          value={searchValue}
-          onChange={handleSearchValue}
-        ></SearchInput>
+        <SearchInput value={searchValue} onChange={handleSearchValue} />
         <Sorter value={sortValue} onChange={setSortValue} />
       </header>
 
       <ul className="flex flex-col gap-2">
-        {countries.map(([name, node]) => {
+        {filteredAndSortedCountries.map(([name, node]) => {
           const rowForSelectedYear = node.data.find(
             (el) => el.year === selectedYear
           );
@@ -146,7 +140,6 @@ export default function List() {
                     : 'N/A'}
                 </Container>
               </div>
-
               {openCountry === name && (
                 <ul className="max-w-11/12 mx-auto p-2 flex flex-col gap-1 bg-gray-700 text-pink-200 border-2 border-pink-400 rounded-md shadow-black shadow-2xl cursor-auto mt-2 h-[60vh] overflow-y-auto">
                   <div className="flex font-bold border-b border-pink-300 pb-1 mb-1">
@@ -192,6 +185,7 @@ export default function List() {
           );
         })}
       </ul>
+
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ColumnSelector
           selected={selectedColumns}
