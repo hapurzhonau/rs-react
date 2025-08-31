@@ -34,8 +34,9 @@ export default function List() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [prevYear, setPrevYear] = useState<number | null>(null);
 
-  const years = countries[0]?.[1].data.map((row) => row.year) ?? [];
+  const years = countries[0][1].data.map((row) => row.year) ?? [];
 
   const handleOpenCountry = (name: string) => {
     setOpenCountry((prev) => (prev === name ? null : name));
@@ -48,6 +49,11 @@ export default function List() {
     }
   }, [years, selectedYear]);
 
+  const handleYearChange = (year: number) => {
+    setPrevYear(selectedYear);
+    setSelectedYear(year);
+  };
+
   return (
     <div className="flex max-w-fit mx-auto py-6 flex-col gap-2">
       <header className="flex gap-20 sticky top-0 p-4 bg-gray-800/85 border-b-4 border-gray-700">
@@ -59,7 +65,7 @@ export default function List() {
           Select columns
         </ButtonSelect>
         <YearSelector
-          onChange={setSelectedYear}
+          onChange={handleYearChange}
           years={years}
           selectedYear={selectedYear ?? 0}
         />
@@ -70,6 +76,11 @@ export default function List() {
           const rowForSelectedYear = node.data.find(
             (el) => el.year === selectedYear
           );
+          const rowForPrevYear = node.data.find((el) => el.year === prevYear);
+          const hasChanged =
+            rowForSelectedYear &&
+            rowForPrevYear &&
+            rowForSelectedYear.population !== rowForPrevYear.population;
           return (
             <li
               key={name}
@@ -83,7 +94,9 @@ export default function List() {
                 <Container className="border-r-1">
                   {node.iso_code ?? 'N/A'}
                 </Container>
-                <Container>
+                <Container
+                  className={`${hasChanged ? 'bg-orange-200/10' : ''}`}
+                >
                   {rowForSelectedYear
                     ? (rowForSelectedYear.population ?? 'N/A')
                     : 'N/A'}
@@ -91,7 +104,7 @@ export default function List() {
               </div>
 
               {openCountry === name && (
-                <ul className="max-w-11/12 mx-auto p-2 flex flex-col gap-1 bg-gray-700 text-pink-200 border-2 border-pink-400 rounded-md shadow-black shadow-2xl cursor-auto mt-2">
+                <ul className="max-w-11/12 mx-auto p-2 flex flex-col gap-1 bg-gray-700 text-pink-200 border-2 border-pink-400 rounded-md shadow-black shadow-2xl cursor-auto mt-2 h-[60vh] overflow-y-auto">
                   <div className="flex font-bold border-b border-pink-300 pb-1 mb-1">
                     <CountryContainer>Year</CountryContainer>
                     <CountryContainer>Population</CountryContainer>
