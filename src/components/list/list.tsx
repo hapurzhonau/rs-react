@@ -7,6 +7,7 @@ import ColumnSelector from '../column-selector/column-selector';
 import ButtonSelect from '../button-select/button-select';
 import { YearSelector } from '../year-selector/year-selector';
 import SearchInput from '../search-input/search-input';
+import Sorter from '../sorter/sorter';
 
 export interface IYearRow {
   year: number;
@@ -30,24 +31,26 @@ const dataPromise = getData();
 export default function List() {
   const rawData = use<ICommonJson>(dataPromise);
   const rowCountries = Object.entries(rawData);
+
   const [countries, setCountries] = useState(rowCountries);
   const [openCountry, setOpenCountry] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [prevYear, setPrevYear] = useState<number | null>(null);
+  const [sortValue, setSortValue] = useState('');
 
-  const years = countries[0][1].data.map((row) => row.year) ?? [];
+  const years =
+    countries.length > 0 ? countries[0][1].data.map((row) => row.year) : [];
 
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearchValue = (value: string) => {
     setSearchValue(value);
-    const filteredCountries = () => {
-      return rowCountries.filter(([name]) => {
-        return name.toLocaleLowerCase().includes(value);
-      });
-    };
+    const filteredCountries = rowCountries.filter(([name]) =>
+      name.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+    );
+
     setCountries(filteredCountries);
   };
 
@@ -66,6 +69,29 @@ export default function List() {
     setPrevYear(selectedYear);
     setSelectedYear(year);
   };
+
+  useEffect(() => {
+    const sorted = [...countries];
+
+    if (sortValue.startsWith('name')) {
+      sorted.sort(([nameA], [nameB]) =>
+        sortValue === 'name-asc'
+          ? nameA.localeCompare(nameB)
+          : nameB.localeCompare(nameA)
+      );
+    } else if (sortValue.startsWith('pop') && selectedYear) {
+      sorted.sort(([, nodeA], [, nodeB]) => {
+        const popA =
+          nodeA.data.find((d) => d.year === selectedYear)?.population ?? 0;
+        const popB =
+          nodeB.data.find((d) => d.year === selectedYear)?.population ?? 0;
+
+        return sortValue === 'population-asc' ? popA - popB : popB - popA;
+      });
+    }
+
+    setCountries(sorted);
+  }, [sortValue, selectedYear, searchValue]);
 
   return (
     <div className="flex max-w-fit mx-auto py-6 flex-col gap-2">
@@ -86,6 +112,7 @@ export default function List() {
           value={searchValue}
           onChange={handleSearchValue}
         ></SearchInput>
+        <Sorter value={sortValue} onChange={setSortValue} />
       </header>
 
       <ul className="flex flex-col gap-2">
