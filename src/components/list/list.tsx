@@ -6,6 +6,7 @@ import { Modal } from '../modal/modal';
 import ColumnSelector from '../column-selector/column-selector';
 import ButtonSelect from '../button-select/button-select';
 import { YearSelector } from '../year-selector/year-selector';
+import SearchInput from '../search-input/search-input';
 
 export interface IYearRow {
   year: number;
@@ -28,8 +29,8 @@ const dataPromise = getData();
 
 export default function List() {
   const rawData = use<ICommonJson>(dataPromise);
-  const countries = Object.entries(rawData);
-
+  const rowCountries = Object.entries(rawData);
+  const [countries, setCountries] = useState(rowCountries);
   const [openCountry, setOpenCountry] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
@@ -37,6 +38,18 @@ export default function List() {
   const [prevYear, setPrevYear] = useState<number | null>(null);
 
   const years = countries[0][1].data.map((row) => row.year) ?? [];
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearchValue = (value: string) => {
+    setSearchValue(value);
+    const filteredCountries = () => {
+      return rowCountries.filter(([name]) => {
+        return name.toLocaleLowerCase().includes(value);
+      });
+    };
+    setCountries(filteredCountries);
+  };
 
   const handleOpenCountry = (name: string) => {
     setOpenCountry((prev) => (prev === name ? null : name));
@@ -69,6 +82,10 @@ export default function List() {
           years={years}
           selectedYear={selectedYear ?? 0}
         />
+        <SearchInput
+          value={searchValue}
+          onChange={handleSearchValue}
+        ></SearchInput>
       </header>
 
       <ul className="flex flex-col gap-2">
