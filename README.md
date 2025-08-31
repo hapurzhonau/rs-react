@@ -11,5 +11,16 @@
 #### Select columns:
 <img width="1839" height="396" alt="image" src="https://github.com/user-attachments/assets/c3133d36-fd00-4b15-95f6-f0bfb1b3aad4" />
 
+# After optimization
+#### Filtering by year:
+<img width="1843" height="386" alt="image" src="https://github.com/user-attachments/assets/b213c95c-1ddc-468e-9315-106c3383978b" />
 
+#### Searching by name:
+<img width="1836" height="310" alt="image" src="https://github.com/user-attachments/assets/4f096ef3-ab72-47c1-9ffa-8d4098aa55a7" />
+
+#### Sorting by population:
+<img width="1841" height="300" alt="image" src="https://github.com/user-attachments/assets/8158bdc6-ba97-4a88-ae64-4bb979e51f29" />
+
+#### Select columns:
+<img width="1837" height="507" alt="image" src="https://github.com/user-attachments/assets/11a80291-46a8-42c6-a90c-7a084dbcbfa9" />
 
